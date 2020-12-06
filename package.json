@@ -1,6 +1,6 @@
 {
   "name": "v5w-utils",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "useful utils",
   "main": "index.js",
   "git repository":"https://github.com/xqli82/utils",
