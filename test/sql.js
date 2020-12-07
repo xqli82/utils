@@ -16,6 +16,6 @@ setInterval(async () => {
     
 }, 5000);
 
-// process.on('uncaughtException',err=>{
-//     console.log(err)
-// })
+process.on('uncaughtException',err=>{
+    console.log(err)
+})

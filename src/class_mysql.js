@@ -21,31 +21,30 @@ class class_mysql {
         })
         this.conn.connect(err => {
             if (err) {
-                return console.log('fail connect:', err)
+                return this.errHandle(err)
             }
+            console.log('连接成功')
             this.status.connect = true
         })
-        this.conn.on('error', err => {
-            console.log('db error', err);
+        this.conn.on('error',err=>this.errHandle(err))
+    }
+    errHandle(err){
+        console.log('db error', err);  
+        // 如果是连接断开，自动重新连接
+        if (err.code === 'ECONNRESET') {
             console.log('3秒后重连')
-            // 如果是连接断开，自动重新连接
-            if (err.code === 'PROTOCOL_CONNECTION_LOST') {
-                this.status.connect = false
-                setTimeout(() => {
-                    if(!this.status.connect) this.connect()
-                }, 3000);
-            } else {
-                throw err;
-            }
-        })
+            this.status.connect = false         
+        } else {
+            console.log(err)
+        }
+        setTimeout(() => {
+            console.log('重新尝试连接')
+            if(!this.status.connect) this.connect()
+        }, 3000);
     }
     query(str) {
         return new Promise((resolve, reject) => {
             this.conn.query(str, (err, results) => {
-                if (!this.status.connect) {
-                    this.connect()
-                    reject('已经断开连接')
-                }
                 if (err) {
                     reject(err)
                 } else {
