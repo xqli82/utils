@@ -32,7 +32,7 @@ class class_mysql {
             if (err.code === 'PROTOCOL_CONNECTION_LOST') {
                 this.status.connect = false
                 setTimeout(() => {
-                    this.connect()
+                    if(!this.status.connect) this.connect()
                 }, 3000);
             } else {
                 throw err;
